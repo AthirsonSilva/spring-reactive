@@ -1,9 +1,8 @@
 package com.javatechie.reactive.service;
 
 import com.javatechie.reactive.dto.ProductDto;
-import com.javatechie.reactive.entity.Product;
 import com.javatechie.reactive.repository.ProductRepository;
-import com.javatechie.reactive.utils.AppUtils;
+import com.javatechie.reactive.utils.ApplicationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Range;
 import org.springframework.stereotype.Service;
@@ -17,35 +16,38 @@ public class ProductService {
     private ProductRepository repository;
 
 
-    public Flux<ProductDto> getProducts(){
-        return repository.findAll().map(AppUtils::entityToDto);
+    public Flux<ProductDto> getProducts() {
+        return repository
+                .findAll()
+                .map(ApplicationUtils::convertEntityToDto);
     }
 
-    public Mono<ProductDto> getProduct(String id){
-        return repository.findById(id).map(AppUtils::entityToDto);
+    public Mono<ProductDto> getProduct(String id) {
+        return repository
+                .findById(id)
+                .map(ApplicationUtils::convertEntityToDto);
     }
 
-    public Flux<ProductDto> getProductInRange(double min,double max){
-        return repository.findByPriceBetween(Range.closed(min,max));
+    public Flux<ProductDto> getProductInRange(double min, double max) {
+        return repository.findByPriceBetween(Range.closed(min, max));
     }
 
-    public Mono<ProductDto> saveProduct(Mono<ProductDto> productDtoMono){
-        System.out.println("service method called ...");
-      return  productDtoMono.map(AppUtils::dtoToEntity)
+    public Mono<ProductDto> saveProduct(Mono<ProductDto> product) {
+        return product.map(ApplicationUtils::convertDtoToEntity)
                 .flatMap(repository::insert)
-                .map(AppUtils::entityToDto);
+                .map(ApplicationUtils::convertEntityToDto);
     }
 
-    public Mono<ProductDto> updateProduct(Mono<ProductDto> productDtoMono,String id){
-       return repository.findById(id)
-                .flatMap(p->productDtoMono.map(AppUtils::dtoToEntity)
-                .doOnNext(e->e.setId(id)))
+    public Mono<ProductDto> updateProduct(Mono<ProductDto> product, String id) {
+        return repository.findById(id)
+                .flatMap(p -> product.map(ApplicationUtils::convertDtoToEntity)
+                        .doOnNext(e -> e.setId(id)))
                 .flatMap(repository::save)
-                .map(AppUtils::entityToDto);
+                .map(ApplicationUtils::convertEntityToDto);
 
     }
 
-    public Mono<Void> deleteProduct(String id){
+    public Mono<Void> deleteProduct(String id) {
         return repository.deleteById(id);
     }
 }

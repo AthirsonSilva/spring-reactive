@@ -1,10 +1,10 @@
 spring:
   data:
     mongodb:
-      database: Productsdb
+      database: products_reactive
       host: localhost
       port: 27017
 
 
 server:
-  port: 9292
+  port: 8080

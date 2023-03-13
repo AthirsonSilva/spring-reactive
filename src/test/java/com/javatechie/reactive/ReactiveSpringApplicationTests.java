@@ -21,7 +21,7 @@ import  static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
 @WebFluxTest(ProductController.class)
-class SpringReactiveMongoCrudApplicationTests {
+class ReactiveSpringApplicationTests {
     @Autowired
     private WebTestClient webTestClient;
     @MockBean
