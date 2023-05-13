@@ -5,6 +5,25 @@ spring:
       host: localhost
       port: 27017
 
+springdoc:
+    api-docs:
+      groups:
+        enabled: true
+      enabled: true
+      path: /api-docs
+    show-actuator: true
+    swagger-ui:
+      enabled: true
+      path: /swagger-ui.html
 
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+        type: TRACE
+      springframework:
+        web: DEBUG
+        
 server:
   port: 8080
