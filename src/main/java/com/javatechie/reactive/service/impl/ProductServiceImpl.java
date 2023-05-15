@@ -10,11 +10,13 @@ import com.javatechie.reactive.service.ProductService;
 import com.javatechie.reactive.utils.ApplicationUtils;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Service
 @RequiredArgsConstructor
+@Log4j2
 public class ProductServiceImpl implements ProductService {
 	private final ProductRepository repository;
 
@@ -30,6 +32,7 @@ public class ProductServiceImpl implements ProductService {
 				.map(ApplicationUtils::convertEntityToDto);
 
 		if (findById == null) {
+			log.info(id + " not found");
 			throw new ProductNotFoundException(HttpStatus.NOT_FOUND, "Product not found", null);
 		}
 
