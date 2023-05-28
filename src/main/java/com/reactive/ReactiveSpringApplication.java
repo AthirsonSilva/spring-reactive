@@ -1,4 +1,4 @@
-package com.javatechie.reactive;
+package com.reactive;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;

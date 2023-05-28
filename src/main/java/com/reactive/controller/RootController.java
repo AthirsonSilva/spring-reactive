@@ -1,4 +1,4 @@
-package com.javatechie.reactive.controller;
+package com.reactive.controller;
 
 import org.springframework.context.annotation.Description;
 import org.springframework.stereotype.Controller;

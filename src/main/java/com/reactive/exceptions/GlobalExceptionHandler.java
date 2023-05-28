@@ -1,4 +1,4 @@
-package com.javatechie.reactive.exceptions;
+package com.reactive.exceptions;
 
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;

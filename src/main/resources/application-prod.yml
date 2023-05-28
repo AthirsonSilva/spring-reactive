@@ -1,0 +1,5 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb+srv://AthirsonSilva:%40Potter77@cluster.ye0yagi.mongodb.net/reactive?retryWrites=true&w=majority
+      database: reactive
