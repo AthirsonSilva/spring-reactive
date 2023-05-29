@@ -31,7 +31,7 @@ public class PostController {
 	}
 
 	@GetMapping("/{id}")
-	public Mono<PostDto> findOne(@PathVariable String id) {
+	public Mono<?> findOne(@PathVariable String id) {
 		return postService.findOne(id);
 	}
 
@@ -52,12 +52,12 @@ public class PostController {
 	}
 
 	@PutMapping("/{id}")
-	public Mono<PostDto> updateOne(@RequestBody Mono<PostDto> post, @PathVariable String id) {
+	public Mono<?> updateOne(@RequestBody Mono<PostDto> post, @PathVariable String id) {
 		return postService.updateOne(post, id);
 	}
 
 	@DeleteMapping("/{id}")
-	public Mono<Void> deleteOne(@PathVariable String id) {
+	public Mono<?> deleteOne(@PathVariable String id) {
 		return postService.deleteOne(id);
 	}
 }

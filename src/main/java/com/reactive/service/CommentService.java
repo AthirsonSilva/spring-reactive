@@ -9,15 +9,15 @@ public interface CommentService {
 
 	Flux<CommentDto> findAll();
 
-	Mono<CommentDto> findOne(String id);
+	Mono<?> findOne(String id);
 
 	Flux<CommentDto> findByPost(String postId);
 
 	Mono<CommentDto> saveOne(Mono<CommentDto> post);
 
-	Mono<CommentDto> updateOne(Mono<CommentDto> post, String id);
+	Mono<?> updateOne(Mono<CommentDto> post, String id);
 
-	Mono<Void> deleteOne(String id);
+	Mono<?> deleteOne(String id);
 
 	Flux<CommentDto> findByName(String name);
 }

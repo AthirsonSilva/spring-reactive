@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.reactive.dto.PostDto;
 import com.reactive.entity.Post;
-import com.reactive.exceptions.PostNotFoundException;
+import com.reactive.exceptions.ResourceNotFoundException;
 import com.reactive.repository.PostRepository;
 import com.reactive.service.PostService;
 import com.reactive.utils.ApplicationUtils;
@@ -29,15 +29,13 @@ public class PostServiceImpl implements PostService {
 				.map(ApplicationUtils::convertPostEntityToDto);
 	}
 
-	public Mono<PostDto> findOne(String id) {
+	public Mono<?> findOne(String id) {
 		Mono<PostDto> findById = postRepository
 				.findById(id)
 				.map(ApplicationUtils::convertPostEntityToDto);
 
-		if (findById == null) {
-			log.info(id + " not found");
-			throw new PostNotFoundException(HttpStatus.NOT_FOUND, "Post not found", null);
-		}
+		if (findById == null)
+			throw new ResourceNotFoundException(HttpStatus.NOT_FOUND, "Post not found", null);
 
 		return findById;
 	}
@@ -54,11 +52,14 @@ public class PostServiceImpl implements PostService {
 		return savedPost.map(ApplicationUtils::convertPostEntityToDto);
 	}
 
-	public Mono<PostDto> updateOne(Mono<PostDto> post, String id) {
+	public Mono<?> updateOne(Mono<PostDto> request, String id) {
 		Mono<Post> foundPost = postRepository.findById(id);
 
+		if (foundPost == null)
+			throw new ResourceNotFoundException(HttpStatus.NOT_FOUND, "There is no such post with given id: " + id, null);
+
 		Mono<Post> updatedPost = foundPost
-				.flatMap(p -> post.map(ApplicationUtils::convertPostDtoToEntity)
+				.flatMap(p -> request.map(ApplicationUtils::convertPostDtoToEntity)
 						.doOnNext(e -> e.setId(id)));
 
 		Mono<Post> savedPost = updatedPost.flatMap(postRepository::save);
@@ -66,7 +67,7 @@ public class PostServiceImpl implements PostService {
 		return savedPost.map(ApplicationUtils::convertPostEntityToDto);
 	}
 
-	public Mono<Void> deleteOne(String id) {
+	public Mono<?> deleteOne(String id) {
 		return postRepository.deleteById(id);
 	}
 

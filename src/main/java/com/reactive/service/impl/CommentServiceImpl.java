@@ -1,9 +1,11 @@
 package com.reactive.service.impl;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.reactive.dto.CommentDto;
 import com.reactive.entity.Comment;
+import com.reactive.exceptions.ResourceNotFoundException;
 import com.reactive.repository.CommentRepository;
 import com.reactive.service.CommentService;
 import com.reactive.utils.ApplicationUtils;
@@ -18,7 +20,7 @@ public class CommentServiceImpl implements CommentService {
 	private final CommentRepository commentRepository;
 
 	@Override
-	public Mono<Void> deleteOne(String id) {
+	public Mono<?> deleteOne(String id) {
 		return commentRepository.deleteById(id);
 	}
 
@@ -41,8 +43,13 @@ public class CommentServiceImpl implements CommentService {
 	}
 
 	@Override
-	public Mono<CommentDto> findOne(String id) {
-		return commentRepository.findById(id)
+	public Mono<?> findOne(String id) {
+		Mono<Comment> foundComment = commentRepository.findById(id);
+
+		if (foundComment == null)
+			throw new ResourceNotFoundException(HttpStatus.NOT_FOUND, "There is no such comment with given ID: " + id, null);
+
+		return foundComment
 				.map(ApplicationUtils::convertCommentEntityToDto);
 	}
 
@@ -54,8 +61,11 @@ public class CommentServiceImpl implements CommentService {
 	}
 
 	@Override
-	public Mono<CommentDto> updateOne(Mono<CommentDto> comment, String id) {
+	public Mono<?> updateOne(Mono<CommentDto> comment, String id) {
 		Mono<Comment> foundComment = commentRepository.findById(id);
+
+		if (foundComment == null)
+			throw new ResourceNotFoundException(HttpStatus.NOT_FOUND, "There is no such comment with given ID: " + id, null);
 
 		Mono<Comment> updatedComment = foundComment
 				.flatMap(c -> comment.map(ApplicationUtils::convertCommentDtoToEntity))
