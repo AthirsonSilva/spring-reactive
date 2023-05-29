@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.reactive.dto.PostDto;
+import com.reactive.entity.Post;
 import com.reactive.exceptions.PostNotFoundException;
 import com.reactive.repository.PostRepository;
 import com.reactive.service.PostService;
@@ -25,13 +26,13 @@ public class PostServiceImpl implements PostService {
 	public Flux<PostDto> findAll() {
 		return postRepository
 				.findAll()
-				.map(ApplicationUtils::convertEntityToDto);
+				.map(ApplicationUtils::convertPostEntityToDto);
 	}
 
 	public Mono<PostDto> findOne(String id) {
 		Mono<PostDto> findById = postRepository
 				.findById(id)
-				.map(ApplicationUtils::convertEntityToDto);
+				.map(ApplicationUtils::convertPostEntityToDto);
 
 		if (findById == null) {
 			log.info(id + " not found");
@@ -46,20 +47,23 @@ public class PostServiceImpl implements PostService {
 	}
 
 	public Mono<PostDto> saveOne(Mono<PostDto> request) {
-		// Post post = request
+		Mono<Post> postEntity = request.map(ApplicationUtils::convertPostDtoToEntity);
 
-		return request.map(ApplicationUtils::convertDtoToEntity)
-				.flatMap(postRepository::insert)
-				.map(ApplicationUtils::convertEntityToDto);
+		Mono<Post> savedPost = postEntity.flatMap(postRepository::insert);
+
+		return savedPost.map(ApplicationUtils::convertPostEntityToDto);
 	}
 
 	public Mono<PostDto> updateOne(Mono<PostDto> post, String id) {
-		return postRepository.findById(id)
-				.flatMap(p -> post.map(ApplicationUtils::convertDtoToEntity)
-						.doOnNext(e -> e.setId(id)))
-				.flatMap(postRepository::save)
-				.map(ApplicationUtils::convertEntityToDto);
+		Mono<Post> foundPost = postRepository.findById(id);
 
+		Mono<Post> updatedPost = foundPost
+				.flatMap(p -> post.map(ApplicationUtils::convertPostDtoToEntity)
+						.doOnNext(e -> e.setId(id)));
+
+		Mono<Post> savedPost = updatedPost.flatMap(postRepository::save);
+
+		return savedPost.map(ApplicationUtils::convertPostEntityToDto);
 	}
 
 	public Mono<Void> deleteOne(String id) {

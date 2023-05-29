@@ -11,9 +11,9 @@ import com.reactive.entity.Post;
 import reactor.core.publisher.Flux;
 
 public interface PostRepository extends ReactiveMongoRepository<Post, String> {
-	@Query("{'created_at':{$gt: ?0, $lt: ?1}}")
+	@Query("{ created_at : { $gt: ?0, $lt: ?1 } }")
 	Flux<PostDto> findByCreatedDateBetween(LocalDateTime min, LocalDateTime max);
 
-	@Query("{'name': {$regex: ?0, $options: 'i'}}")
+	@Query("{ name: { $regex: ?0, $options: 'i' } }")
 	Flux<PostDto> findByName(String name);
 }

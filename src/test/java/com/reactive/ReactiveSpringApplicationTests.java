@@ -1,8 +1,10 @@
-package com.javatechie.reactive;
+package com.reactive;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
+
+import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -30,23 +32,22 @@ class ReactiveSpringApplicationTests {
 
 	@Test
 	public void addProductTest() {
-		Mono<PostDto> productDtoMono = Mono.just(new PostDto("102", "mobile", 1, 10000));
-		when(service.saveOne(productDtoMono)).thenReturn(productDtoMono);
+		Mono<PostDto> postDtoMono = Mono.just(generatedPostDto());
+		when(service.saveOne(postDtoMono)).thenReturn(postDtoMono);
 
-		webTestClient.post().uri("/products")
-				.body(Mono.just(productDtoMono), PostDto.class)
+		webTestClient.post().uri("/posts")
+				.body(Mono.just(postDtoMono), PostDto.class)
 				.exchange()
-				.expectStatus().isOk();// 200
-
+				.expectStatus().isOk();
 	}
 
 	@Test
 	public void getProductsTest() {
-		Flux<PostDto> productDtoFlux = Flux.just(new PostDto("102", "mobile", 1, 10000),
-				new PostDto("103", "TV", 1, 50000));
-		when(service.findAll()).thenReturn(productDtoFlux);
+		Flux<PostDto> postDtoFlux = Flux.just(generatedPostDto(),
+				generatedPostDto());
+		when(service.findAll()).thenReturn(postDtoFlux);
 
-		Flux<PostDto> responseBody = webTestClient.get().uri("/products")
+		Flux<PostDto> responseBody = webTestClient.get().uri("/posts")
 				.exchange()
 				.expectStatus().isOk()
 				.returnResult(PostDto.class)
@@ -54,18 +55,18 @@ class ReactiveSpringApplicationTests {
 
 		StepVerifier.create(responseBody)
 				.expectSubscription()
-				.expectNext(new PostDto("102", "mobile", 1, 10000))
-				.expectNext(new PostDto("103", "TV", 1, 50000))
+				.expectNext(generatedPostDto())
+				.expectNext(generatedPostDto())
 				.verifyComplete();
 
 	}
 
 	@Test
 	public void getProductTest() {
-		Mono<PostDto> productDtoMono = Mono.just(new PostDto("102", "mobile", 1, 10000));
-		when(service.findOne(any())).thenReturn(productDtoMono);
+		Mono<PostDto> postDtoMono = Mono.just(generatedPostDto());
+		when(service.findOne(any())).thenReturn(postDtoMono);
 
-		Flux<PostDto> responseBody = webTestClient.get().uri("/products/102")
+		Flux<PostDto> responseBody = webTestClient.get().uri("/posts/6473d67fc74ce276e442c4bd")
 				.exchange()
 				.expectStatus().isOk()
 				.returnResult(PostDto.class)
@@ -73,17 +74,17 @@ class ReactiveSpringApplicationTests {
 
 		StepVerifier.create(responseBody)
 				.expectSubscription()
-				.expectNextMatches(p -> p.getName().equals("mobile"))
+				.expectNextMatches(p -> p.getTitle().equals("mobile"))
 				.verifyComplete();
 	}
 
 	@Test
 	public void updateProductTest() {
-		Mono<PostDto> productDtoMono = Mono.just(new PostDto("102", "mobile", 1, 10000));
-		when(service.updateOne(productDtoMono, "102")).thenReturn(productDtoMono);
+		Mono<PostDto> postDtoMono = Mono.just(generatedPostDto());
+		when(service.updateOne(postDtoMono, "6473d67fc74ce276e442c4bd")).thenReturn(postDtoMono);
 
-		webTestClient.put().uri("/products/update/102")
-				.body(Mono.just(productDtoMono), PostDto.class)
+		webTestClient.put().uri("/posts/update/6473d67fc74ce276e442c4bd")
+				.body(Mono.just(postDtoMono), PostDto.class)
 				.exchange()
 				.expectStatus().isOk();// 200
 	}
@@ -91,9 +92,13 @@ class ReactiveSpringApplicationTests {
 	@Test
 	public void deleteProductTest() {
 		given(service.deleteOne(any())).willReturn(Mono.empty());
-		webTestClient.delete().uri("/products/delete/102")
+		webTestClient.delete().uri("/posts/delete/6473d67fc74ce276e442c4bd")
 				.exchange()
 				.expectStatus().isOk();// 200
 	}
 
+	private PostDto generatedPostDto() {
+		return new PostDto("6473d67fc74ce276e442c4bd", "Random title", "Random content", LocalDateTime.now(),
+				LocalDateTime.now());
+	}
 }

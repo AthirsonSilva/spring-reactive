@@ -12,17 +12,15 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PostDto {
-
+public class CommentDto {
 	private String id;
 
 	// @NotEmpty
 	// @Min(5)
-	private String title;
+	private String content;
 
 	// @NotEmpty
-	// @Min(5)
-	private String content;
+	private String postId;
 
 	private LocalDateTime createdAt;
 

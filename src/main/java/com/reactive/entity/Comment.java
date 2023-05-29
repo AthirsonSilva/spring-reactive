@@ -9,20 +9,24 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(collection = "posts")
-public class Post implements Serializable {
+@Getter
+@Setter
+@ToString
+@Document(collection = "comments")
+public class Comment implements Serializable {
 	@Id
 	private String id;
 
-	private String title;
-
 	private String content;
+
+	private String postId;
 
 	@CreatedDate
 	private LocalDateTime createdAt;

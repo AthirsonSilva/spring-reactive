@@ -15,9 +15,9 @@ public interface PostService {
 
 	Flux<PostDto> getInRange(LocalDateTime min, LocalDateTime max);
 
-	Mono<PostDto> saveOne(Mono<PostDto> post);
+	Mono<PostDto> saveOne(Mono<PostDto> product);
 
-	Mono<PostDto> updateOne(Mono<PostDto> post, String id);
+	Mono<PostDto> updateOne(Mono<PostDto> product, String id);
 
 	Mono<Void> deleteOne(String id);
 
