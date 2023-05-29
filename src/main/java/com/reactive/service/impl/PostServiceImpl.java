@@ -29,7 +29,7 @@ public class PostServiceImpl implements PostService {
 				.map(ApplicationUtils::convertPostEntityToDto);
 	}
 
-	public Mono<?> findOne(String id) {
+	public Mono<PostDto> findOne(String id) {
 		Mono<PostDto> findById = postRepository
 				.findById(id)
 				.map(ApplicationUtils::convertPostEntityToDto);
@@ -52,7 +52,7 @@ public class PostServiceImpl implements PostService {
 		return savedPost.map(ApplicationUtils::convertPostEntityToDto);
 	}
 
-	public Mono<?> updateOne(Mono<PostDto> request, String id) {
+	public Mono<PostDto> updateOne(Mono<PostDto> request, String id) {
 		Mono<Post> foundPost = postRepository.findById(id);
 
 		if (foundPost == null)
@@ -67,7 +67,7 @@ public class PostServiceImpl implements PostService {
 		return savedPost.map(ApplicationUtils::convertPostEntityToDto);
 	}
 
-	public Mono<?> deleteOne(String id) {
+	public Mono<Void> deleteOne(String id) {
 		return postRepository.deleteById(id);
 	}
 

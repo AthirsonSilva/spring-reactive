@@ -11,15 +11,15 @@ public interface PostService {
 
 	Flux<PostDto> findAll();
 
-	Mono<?> findOne(String id);
+	Mono<PostDto> findOne(String id);
 
 	Flux<PostDto> getInRange(LocalDateTime min, LocalDateTime max);
 
 	Mono<PostDto> saveOne(Mono<PostDto> product);
 
-	Mono<?> updateOne(Mono<PostDto> product, String id);
+	Mono<PostDto> updateOne(Mono<PostDto> product, String id);
 
-	Mono<?> deleteOne(String id);
+	Mono<Void> deleteOne(String id);
 
 	Flux<PostDto> findByName(String name);
 }

@@ -20,7 +20,7 @@ public class CommentServiceImpl implements CommentService {
 	private final CommentRepository commentRepository;
 
 	@Override
-	public Mono<?> deleteOne(String id) {
+	public Mono<Void> deleteOne(String id) {
 		return commentRepository.deleteById(id);
 	}
 
@@ -43,7 +43,7 @@ public class CommentServiceImpl implements CommentService {
 	}
 
 	@Override
-	public Mono<?> findOne(String id) {
+	public Mono<CommentDto> findOne(String id) {
 		Mono<Comment> foundComment = commentRepository.findById(id);
 
 		if (foundComment == null)
@@ -61,7 +61,7 @@ public class CommentServiceImpl implements CommentService {
 	}
 
 	@Override
-	public Mono<?> updateOne(Mono<CommentDto> comment, String id) {
+	public Mono<CommentDto> updateOne(Mono<CommentDto> comment, String id) {
 		Mono<Comment> foundComment = commentRepository.findById(id);
 
 		if (foundComment == null)

@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public Mono<?> findOne(String id) {
+	public Mono<UserDto> findOne(String id) {
 		Mono<User> foundUser = userRepository.findById(id);
 
 		if (foundUser == null)

@@ -34,7 +34,7 @@ public class CommentController {
 	}
 
 	@GetMapping("/{id}")
-	public Mono<?> find(@PathVariable String id) {
+	public Mono<CommentDto> find(@PathVariable String id) {
 		return commentService.findOne(id);
 	}
 
@@ -49,12 +49,12 @@ public class CommentController {
 	}
 
 	@PutMapping("/{id}")
-	public Mono<?> update(@RequestBody Mono<CommentDto> request, @PathVariable String id) {
+	public Mono<CommentDto> update(@RequestBody Mono<CommentDto> request, @PathVariable String id) {
 		return commentService.updateOne(request, id);
 	}
 
 	@DeleteMapping("/{id}")
-	public Mono<?> delete(@PathVariable String id) {
+	public Mono<Void> delete(@PathVariable String id) {
 		return commentService.deleteOne(id);
 	}
 }

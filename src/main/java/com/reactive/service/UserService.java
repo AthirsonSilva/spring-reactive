@@ -8,13 +8,13 @@ import reactor.core.publisher.Mono;
 public interface UserService {
 	Flux<UserDto> findAll();
 
-	Mono<?> findOne(String id);
+	Mono<UserDto> findOne(String id);
 
 	Mono<UserDto> saveOne(Mono<UserDto> request);
 
-	Mono<?> updateOne(Mono<UserDto> request, String id);
+	Mono<UserDto> updateOne(Mono<UserDto> request, String id);
 
-	Mono<?> deleteOne(String id);
+	Mono<Void> deleteOne(String id);
 
 	Flux<UserDto> findByName(String name);
 }

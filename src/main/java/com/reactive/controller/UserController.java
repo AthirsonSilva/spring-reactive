@@ -29,7 +29,7 @@ public class UserController {
 	}
 
 	@GetMapping("/{id}")
-	public Mono<?> findOne(@RequestParam String id) {
+	public Mono<UserDto> findOne(@RequestParam String id) {
 		return userService.findOne(id);
 	}
 
@@ -39,12 +39,12 @@ public class UserController {
 	}
 
 	@PutMapping("/{id}")
-	public Mono<?> updateOne(@PathVariable String id, @RequestBody Mono<UserDto> entity) {
+	public Mono<UserDto> updateOne(@PathVariable String id, @RequestBody Mono<UserDto> entity) {
 		return userService.updateOne(entity, id);
 	}
 
 	@DeleteMapping("/{id}")
-	public Mono<?> deleteOne(@RequestParam String param) {
+	public Mono<Void> deleteOne(@RequestParam String param) {
 		return userService.deleteOne(param);
 	}
 }
