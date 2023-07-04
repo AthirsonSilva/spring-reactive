@@ -1,5 +1,5 @@
 #!/bin/bash
-#install docker
+# install docker
 sudo apt-get update -y &&
 sudo apt-get install -y \
     apt-transport-https \
@@ -15,12 +15,15 @@ sudo usermod -aG docker ubuntu
 sudo systemctl enable docker.service
 sudo systemctl enable containerd.service
 
-#install docker compose
+# install docker compose
 sudo apt install docker-compose -y
 
-#clone your project from git repository
+# access user root
+sudo su
+
+# clone your project from git repository
 git clone https://github.com/athirsonsilva/spring-reactive
 cd spring-reactive
 
-#run your docker compose file
+# run your docker compose file
 docker-compose up -d
