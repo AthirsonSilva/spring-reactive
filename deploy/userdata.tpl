@@ -21,6 +21,10 @@ sudo apt install docker-compose -y
 # access user root
 sudo su
 
+# create project directory
+mkdir /home/ubuntu/project
+cd /home/ubuntu/project
+
 # clone your project from git repository
 git clone https://github.com/athirsonsilva/spring-reactive
 cd spring-reactive
