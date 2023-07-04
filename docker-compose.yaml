@@ -1,0 +1,14 @@
+version: "3.8"
+
+services:
+  api:
+    container_name: spring-reactive
+    environment:
+      - SPRING_ENV=prod
+      - PORT=8080
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    restart: on-failure
