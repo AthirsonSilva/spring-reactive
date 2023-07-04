@@ -18,16 +18,9 @@ sudo systemctl enable containerd.service
 #install docker compose
 sudo apt install docker-compose -y
 
-#access user root
-sudo su
-
-#create project folder
-mkdir /home/ubuntu/project
-cd /home/ubuntu/project
-
 #clone your project from git repository
 git clone https://github.com/athirsonsilva/spring-reactive
 cd spring-reactive
 
 #run your docker compose file
-docker-compose -f docker-compose.yml up -d
+docker-compose up -d
