@@ -8,6 +8,7 @@ resource "aws_vpc" "spring_vpc_1" {
   }
 }
 
+
 resource "aws_subnet" "spring_subnet_pub_1a" {
   vpc_id                  = aws_vpc.spring_vpc_1.id
   cidr_block              = "10.0.1.0/24"
@@ -64,3 +65,4 @@ resource "aws_instance" "spring_ec2_inst" {
     "Name" = "spring_ec2_inst"
   }
 }
+
